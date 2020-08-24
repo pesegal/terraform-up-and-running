@@ -22,7 +22,6 @@ data "aws_subnet_ids" "default" {
 }
 
 # ALB Config
-
 resource "aws_lb" "example" {
   name = "terraform-asg-example"
   load_balancer_type = "application"
