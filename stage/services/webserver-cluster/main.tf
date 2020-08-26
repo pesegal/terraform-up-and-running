@@ -2,24 +2,18 @@ provider "aws" {
   region = "us-west-2"
 }
 
-variable "server_port" {
-  description = "The port number the server will use for HTTP requests"
-  type        = number
-  default     = 8080
+terraform {
+    backend "s3" {
+        bucket = "terraform-state-pesegal"
+        key = "stage/services/webserver-cluster/terraform.tfstate"
+        region = "us-west-2"
+
+        # Replace this with the DynamoDB table name!
+        dynamodb_table = "terraform-state-locks-pesegal"
+        encrypt = true
+    }
 }
 
-output "alb_dns_name" {
-  value = aws_lb.example.dns_name
-  description = "domain name of the load balancer"
-}
-
-data "aws_vpc" "default" {
-  default = true
-}
-
-data "aws_subnet_ids" "default" {
-  vpc_id = data.aws_vpc.default.id
-}
 
 # ALB Config
 resource "aws_lb" "example" {
